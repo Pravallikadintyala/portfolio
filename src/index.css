@@ -1,0 +1,775 @@
+/* ============================================================
+   Global Styles — Pravallika Dintyala Portfolio
+   
+   Architecture:
+   1. Google Fonts import
+   2. Tailwind import
+   3. CSS Custom Properties (design tokens)
+   4. Reset + base
+   5. Typography system
+   6. Layout utilities
+   7. Component base styles (buttons, tags, links)
+   8. Section environment helpers
+   9. Transition bridge classes
+   10. GSAP animation helpers
+   11. Scrollbar + selection
+   12. prefers-reduced-motion
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300;12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
+@import "tailwindcss";
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  /* ── Core Palette ─────────────────────────────────────── */
+  --color-bg:         #F7F6F2;   /* Primary background — warm off-white */
+  --color-ink:        #121E35;   /* Deep ink — typography + cinematic dark bg */
+  --color-navy:       #213661;   /* Signature brand color — CTAs, accents */
+  --color-muted:      #8FA0B8;   /* Soft blue-gray — secondary text, metadata */
+  --color-tint:       #E9EDF3;   /* Light navy tint — surfaces, alternating sections */
+  --color-border:     rgba(18, 30, 53, 0.07);  /* Structural borders — barely visible */
+  --color-border-mid: rgba(18, 30, 53, 0.12);  /* Slightly more visible borders */
+
+  /* ── Dark Environment (Projects section) ─────────────── */
+  --color-dark-bg:    #121E35;   /* Same as ink — used as full dark section bg */
+  --color-dark-text:  #F7F6F2;   /* Light text on dark */
+  --color-dark-sub:   #8FA0B8;   /* Muted on dark */
+  --color-dark-border: rgba(247, 246, 242, 0.08);
+
+  /* ── Transition Gradient Colors ──────────────────────── */
+  /* Used for smooth light→dark and dark→light blends */
+  --color-fade-to-dark-start: #F7F6F2;
+  --color-fade-to-dark-end:   #121E35;
+
+  /* ── Typography ──────────────────────────────────────── */
+  --font-sans:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+
+  /* ── Type Scale ──────────────────────────────────────── */
+  --text-hero:     clamp(2.8rem, 7.5vw, 6.5rem);
+  --text-display:  clamp(2rem, 4.5vw, 3.75rem);
+  --text-section:  clamp(1.75rem, 3.5vw, 2.75rem);
+  --text-title:    clamp(1.25rem, 2.5vw, 1.75rem);
+  --text-body-lg:  1.125rem;
+  --text-body:     1rem;
+  --text-sm:       0.9375rem;
+  --text-xs:       0.8125rem;
+  --text-eyebrow:  0.6875rem;
+
+  /* ── Spacing ─────────────────────────────────────────── */
+  --space-section:    8rem;      /* Full section vertical padding */
+  --space-section-sm: 5rem;      /* Compact sections */
+  --space-content:    2rem;      /* Horizontal content padding */
+  --space-content-lg: 2.5rem;    /* Wider screens */
+  --max-w-content:    1280px;    /* Max content width */
+  --max-w-text:       680px;     /* Max text column width */
+  --max-w-wide:       1440px;    /* Wide layout */
+
+  /* ── Easing ──────────────────────────────────────────── */
+  --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:     cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-snap:       cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-bounce:     cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Duration ────────────────────────────────────────── */
+  --duration-instant: 0.1s;
+  --duration-fast:    0.2s;
+  --duration-base:    0.35s;
+  --duration-slow:    0.6s;
+  --duration-slower:  1s;
+  --duration-cinematic: 1.4s;
+
+  /* ── Navbar ──────────────────────────────────────────── */
+  --navbar-height: 64px;
+}
+
+/* ============================================================
+   RESET + BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Lenis manages scroll — do NOT set scroll-behavior here */
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  /* Prevent layout shift from scrollbar appearing */
+  scrollbar-gutter: stable;
+}
+
+/* ── Lenis ───────────────────────────────────────────────── */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* ── Base Elements ───────────────────────────────────────── */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+/* Focus — accessible + on-brand */
+:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   TYPOGRAPHY SYSTEM
+   ============================================================ */
+
+/* ── Font Families ───────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+}
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+/* ── Display Scale ───────────────────────────────────────── */
+
+/* Hero — massive, cinematic, full-viewport presence */
+.type-hero {
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
+  font-weight: 800;
+  line-height: 0.93;
+  letter-spacing: -0.03em;
+}
+
+/* Display — large section opener headline */
+.type-display {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.025em;
+}
+
+/* Section — standard section headings */
+.type-section {
+  font-family: var(--font-display);
+  font-size: var(--text-section);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+/* Title — sub-headings, card titles */
+.type-title {
+  font-family: var(--font-display);
+  font-size: var(--text-title);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+/* Eyebrow — small uppercase label above headings */
+.type-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-navy);
+  line-height: 1;
+}
+
+/* Eyebrow variant for dark backgrounds */
+.type-eyebrow-dark {
+  font-family: var(--font-sans);
+  font-size: var(--text-eyebrow);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  line-height: 1;
+}
+
+/* Body — readable paragraph text */
+.type-body {
+  font-size: var(--text-body);
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-ink) 65%, transparent);
+}
+
+.type-body-lg {
+  font-size: var(--text-body-lg);
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-ink) 65%, transparent);
+}
+
+/* Metadata — period labels, captions, small details */
+.type-meta {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* ============================================================
+   LAYOUT SYSTEM
+   ============================================================ */
+
+/* ── Content Container ───────────────────────────────────── */
+.container-main {
+  width: 100%;
+  max-width: var(--max-w-content);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-content);
+  padding-right: var(--space-content);
+}
+
+@media (min-width: 640px) {
+  .container-main {
+    padding-left: calc(var(--space-content) + 0.5rem);
+    padding-right: calc(var(--space-content) + 0.5rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-main {
+    padding-left: var(--space-content-lg);
+    padding-right: var(--space-content-lg);
+  }
+}
+
+/* ── Section Spacing ─────────────────────────────────────── */
+.section-padding {
+  padding-top: var(--space-section);
+  padding-bottom: var(--space-section);
+}
+
+.section-padding-sm {
+  padding-top: var(--space-section-sm);
+  padding-bottom: var(--space-section-sm);
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding-top: calc(var(--space-section) * 0.65);
+    padding-bottom: calc(var(--space-section) * 0.65);
+  }
+}
+
+/* ── Section Divider Line ────────────────────────────────── */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* ============================================================
+   SECTION ENVIRONMENTS
+   Light and dark environments with intentional transitions
+   ============================================================ */
+
+/* ── Light Environment ───────────────────────────────────── */
+.env-light {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+}
+
+/* ── Light Tint Environment ──────────────────────────────── */
+.env-tint {
+  background-color: var(--color-tint);
+  color: var(--color-ink);
+}
+
+/* ── Dark Cinematic Environment ──────────────────────────── */
+.env-dark {
+  background-color: var(--color-dark-bg);
+  color: var(--color-dark-text);
+}
+
+/* ── Transition Bridge: Light → Dark ─────────────────────── */
+/* 
+  Applied to a wrapper div above the dark section.
+  Creates a gradient that smoothly fades from the warm off-white
+  into the deep ink, avoiding an abrupt hard edge.
+  Height is intentionally generous (120px) so the transition
+  happens within the viewport scroll, feeling organic.
+*/
+.transition-to-dark {
+  position: relative;
+  z-index: 1;
+}
+.transition-to-dark::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, var(--color-dark-bg));
+  pointer-events: none;
+}
+
+/* ── Transition Bridge: Dark → Light ─────────────────────── */
+.transition-from-dark {
+  position: relative;
+  z-index: 1;
+}
+.transition-from-dark::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to top, transparent, var(--color-dark-bg));
+  pointer-events: none;
+}
+
+/* ── Dark section internal text helpers ──────────────────── */
+.env-dark .text-primary { color: var(--color-dark-text); }
+.env-dark .text-secondary { color: var(--color-muted); }
+
+/* ============================================================
+   SECTION HEADING SYSTEM
+   Consistent visual language for every section's heading block
+   ============================================================ */
+
+/* Heading block — eyebrow + title + optional subtitle */
+.section-heading {
+  margin-bottom: 4rem;
+}
+
+.section-heading-sm {
+  margin-bottom: 2.5rem;
+}
+
+/* Section number — subtle editorial detail */
+.section-number {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--color-muted);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Section heading rule — short horizontal line accent */
+.heading-rule {
+  display: block;
+  width: 2rem;
+  height: 1px;
+  background: var(--color-navy);
+  margin-bottom: 1.5rem;
+}
+
+/* Dark variant heading rule */
+.heading-rule-dark {
+  background: var(--color-muted);
+}
+
+/* ============================================================
+   BUTTON SYSTEM
+   ============================================================ */
+
+/* ── Base Button ─────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;  /* Full pill */
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-base) var(--ease-snap),
+    border-color var(--duration-base) var(--ease-snap),
+    color var(--duration-base) var(--ease-snap),
+    transform var(--duration-fast) var(--ease-snap),
+    box-shadow var(--duration-base) var(--ease-snap);
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-navy);
+  outline-offset: 3px;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+/* ── Sizes ───────────────────────────────────────────────── */
+.btn-sm  { padding: 0.5rem 1.125rem;  font-size: 0.8125rem; }
+.btn-md  { padding: 0.75rem 1.5rem;   font-size: 0.875rem; }
+.btn-lg  { padding: 0.875rem 2rem;    font-size: 0.9375rem; }
+.btn-xl  { padding: 1rem 2.5rem;      font-size: 1rem; }
+
+/* ── Primary — Navy solid ────────────────────────────────── */
+.btn-primary {
+  background: var(--color-navy);
+  color: var(--color-bg);
+  border: 1.5px solid var(--color-navy);
+}
+
+.btn-primary:hover {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+/* ── Secondary / Outline ─────────────────────────────────── */
+.btn-outline {
+  background: transparent;
+  color: var(--color-navy);
+  border: 1.5px solid var(--color-navy);
+}
+
+.btn-outline:hover {
+  background: var(--color-tint);
+}
+
+/* ── Ghost ───────────────────────────────────────────────── */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-ink);
+  border: 1.5px solid var(--color-border-mid);
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-navy);
+  color: var(--color-navy);
+}
+
+/* ── Dark environment overrides ──────────────────────────── */
+.env-dark .btn-outline {
+  color: var(--color-dark-text);
+  border-color: rgba(247, 246, 242, 0.25);
+}
+.env-dark .btn-outline:hover {
+  background: rgba(247, 246, 242, 0.06);
+  border-color: rgba(247, 246, 242, 0.45);
+}
+
+/* ── Text Link ───────────────────────────────────────────── */
+.link-underline {
+  position: relative;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-navy);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.link-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-base) var(--ease-out-expo);
+}
+
+.link-underline:hover::after {
+  transform: scaleX(1);
+}
+
+/* ── Icon Button ─────────────────────────────────────────── */
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border-mid);
+  color: var(--color-ink);
+  transition:
+    border-color var(--duration-base) var(--ease-snap),
+    color var(--duration-base) var(--ease-snap),
+    background var(--duration-base) var(--ease-snap);
+}
+
+.btn-icon:hover {
+  border-color: var(--color-navy);
+  color: var(--color-navy);
+  background: var(--color-tint);
+}
+
+/* ============================================================
+   TAG / BADGE SYSTEM
+   ============================================================ */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  padding: 0.3125rem 0.875rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-tint);
+  color: color-mix(in srgb, var(--color-ink) 70%, transparent);
+  white-space: nowrap;
+  transition: 
+    background var(--duration-fast) var(--ease-snap),
+    border-color var(--duration-fast) var(--ease-snap);
+}
+
+.tag:hover {
+  background: var(--color-bg);
+  border-color: var(--color-border-mid);
+}
+
+/* Dark environment tag */
+.tag-dark {
+  background: rgba(247, 246, 242, 0.06);
+  border-color: rgba(247, 246, 242, 0.12);
+  color: var(--color-muted);
+}
+
+.tag-dark:hover {
+  background: rgba(247, 246, 242, 0.1);
+}
+
+/* Accent tag — navy tinted */
+.tag-accent {
+  background: color-mix(in srgb, var(--color-navy) 8%, transparent);
+  border-color: color-mix(in srgb, var(--color-navy) 20%, transparent);
+  color: var(--color-navy);
+}
+
+/* ============================================================
+   NAVIGATION — REFINED
+   ============================================================ */
+
+.nav-link {
+  position: relative;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--color-ink) 55%, transparent);
+  transition: color var(--duration-fast) var(--ease-snap);
+  padding: 0.375rem 0.625rem;
+}
+
+.nav-link:hover {
+  color: var(--color-navy);
+}
+
+.nav-link.active {
+  color: var(--color-navy);
+}
+
+/* Sliding underline indicator (managed by Framer Motion layoutId) */
+.nav-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0.625rem;
+  right: 0.625rem;
+  height: 1px;
+  background: var(--color-navy);
+}
+
+/* ============================================================
+   CARD SYSTEM
+   Used sparingly — only when content genuinely benefits
+   ============================================================ */
+
+.card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition:
+    border-color var(--duration-base) var(--ease-snap),
+    box-shadow var(--duration-base) var(--ease-snap);
+}
+
+.card:hover {
+  border-color: var(--color-border-mid);
+  box-shadow: 0 4px 24px rgba(18, 30, 53, 0.05);
+}
+
+/* Dark environment card */
+.card-dark {
+  background: rgba(247, 246, 242, 0.03);
+  border-color: var(--color-dark-border);
+  border-radius: 12px;
+}
+
+.card-dark:hover {
+  background: rgba(247, 246, 242, 0.06);
+  border-color: rgba(247, 246, 242, 0.12);
+}
+
+/* ============================================================
+   DIVIDER / STRUCTURAL LINE
+   ============================================================ */
+
+.rule-h {
+  width: 100%;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.rule-v {
+  width: 1px;
+  height: 100%;
+  background: var(--color-border);
+}
+
+.rule-dark {
+  background: var(--color-dark-border);
+}
+
+/* ============================================================
+   GSAP ANIMATION HELPERS
+   ============================================================ */
+
+/* Initial hidden state — GSAP animates these in */
+.gsap-will-animate {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Clip-path reveal container */
+.clip-reveal {
+  overflow: hidden;
+}
+
+/* Used for text character/word splitting */
+.split-parent {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: top;
+}
+
+/* ============================================================
+   UTILITY CLASSES
+   ============================================================ */
+
+/* Visually hidden — accessible */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.sr-only.focus\:not-sr-only:focus {
+  position: fixed;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  border-radius: 3px;
+  opacity: 0.6;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-navy);
+}
+
+/* ============================================================
+   SELECTION
+   ============================================================ */
+::selection {
+  background: var(--color-navy);
+  color: var(--color-bg);
+}
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+@media print {
+  body { background: white; color: black; }
+  .no-print { display: none; }
+}
+
+/* ============================================================
+   PREFERS REDUCED MOTION
+   All CSS animations disabled. JS uses useReducedMotion() hook.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
