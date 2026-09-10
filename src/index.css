@@ -656,6 +656,12 @@ video {
   border-color: rgba(247, 246, 242, 0.12);
 }
 
+/* Project card — dark environment hover */
+.env-dark article.group:hover {
+  border-color: rgba(247, 246, 242, 0.14) !important;
+  background: rgba(247, 246, 242, 0.05) !important;
+}
+
 /* ============================================================
    DIVIDER / STRUCTURAL LINE
    ============================================================ */
@@ -757,6 +763,38 @@ video {
 @media print {
   body { background: white; color: black; }
   .no-print { display: none; }
+}
+
+/* ============================================================
+   HERO — SPECIFIC ANIMATIONS
+   ============================================================ */
+
+/* Scroll line — vertical animated indicator in hero */
+@keyframes scrollLineAnim {
+  0%   { transform: scaleY(0); transform-origin: top;    opacity: 0; }
+  30%  { transform: scaleY(1); transform-origin: top;    opacity: 1; }
+  70%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+  100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+}
+
+/* CTA shine sweep — slides across primary button on hover */
+.hero-cta-shine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 65%
+  );
+  transform: translateX(-100%);
+  transition: transform 0s;
+  pointer-events: none;
+}
+
+.btn-primary:hover .hero-cta-shine {
+  transform: translateX(100%);
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ============================================================

@@ -24,6 +24,7 @@ export interface Project {
   longDescription?: string;
   tags: string[];
   techStack: string[];
+  metric?: { value: string; label: string };
   liveUrl?: string;
   githubUrl?: string;
   featured: boolean;
@@ -54,6 +55,7 @@ export interface Certification {
   title: string;
   issuer: string;
   date: string;
+  expires?: string;
   credentialUrl?: string;
   badgeColor?: string;
 }
