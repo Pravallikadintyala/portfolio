@@ -798,6 +798,120 @@ video {
 }
 
 /* ============================================================
+   PREMIUM & CLASSY UTILITY STYLES
+   ============================================================ */
+
+/* ── Glassmorphism Card ───────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(33, 54, 97, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(33, 54, 97, 0.04);
+}
+
+.glass-card-dark {
+  background: rgba(18, 30, 53, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(247, 246, 242, 0.08);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* ── Social Link Pill Button ──────────────────────────────── */
+.social-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-ink);
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--color-border-mid);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.social-pill:hover {
+  color: var(--color-navy);
+  border-color: var(--color-navy);
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px -4px rgba(33, 54, 97, 0.15);
+}
+
+.social-pill-primary {
+  background: var(--color-navy);
+  color: #ffffff;
+  border: 1px solid var(--color-navy);
+}
+
+.social-pill-primary:hover {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(18, 30, 53, 0.3);
+}
+
+/* Icon pulse on hover */
+.social-pill:hover .social-icon {
+  transform: scale(1.12) rotate(-4deg);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.social-icon {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Arrow hover slide */
+.social-pill:hover .social-arrow {
+  transform: translate(3px, -3px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.social-arrow {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Gradient Text Accent */
+.gradient-text-navy {
+  background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-ink) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-light {
+  background: linear-gradient(135deg, #ffffff 0%, #8FA0B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtle Glow Border */
+.glow-border {
+  position: relative;
+}
+
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(33,54,97,0.3), rgba(143,160,184,0.1), rgba(33,54,97,0.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ============================================================
    PREFERS REDUCED MOTION
    All CSS animations disabled. JS uses useReducedMotion() hook.
    ============================================================ */
@@ -811,3 +925,4 @@ video {
     scroll-behavior: auto !important;
   }
 }
+

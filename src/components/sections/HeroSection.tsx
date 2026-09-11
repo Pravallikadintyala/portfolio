@@ -1,7 +1,11 @@
 import { useRef } from 'react';
 import { motion, useReducedMotion as useFramerReducedMotion } from 'framer-motion';
+import { GithubIcon, LinkedinIcon, ArrowUpRightIcon } from '../ui/Icons';
 import { AnimatedArrow } from '../ui/AnimatedArrow';
 import { useScrollTo } from '../../hooks/useLenis';
+import { SOCIAL_LINKS } from '../../constants/social';
+
+
 
 /* ============================================================
    Hero entrance animation variants
@@ -306,7 +310,7 @@ export function HeroSection() {
             development, cloud infrastructure, and deployment.
           </motion.p>
 
-          {/* ── CTAs ────────────────────────────────────────── */}
+          {/* ── CTAs & Social Links ────────────────────────── */}
           <motion.div
             ref={heroCtaRef}
             variants={item}
@@ -315,7 +319,7 @@ export function HeroSection() {
               display: 'flex',
               flexWrap: 'wrap',
               alignItems: 'center',
-              gap: '0.875rem',
+              gap: '1rem',
               willChange: 'transform, opacity',
             }}
           >
@@ -336,9 +340,42 @@ export function HeroSection() {
             >
               View Projects
             </HeroCTA>
+
+            <div className="h-6 w-px bg-[var(--color-border-mid)] hidden sm:block mx-1" aria-hidden="true" />
+
+            {/* Quick Social Pills */}
+            <div className="flex items-center gap-2.5">
+              <a
+                id="hero-github"
+                href={SOCIAL_LINKS.GITHUB}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-pill text-xs py-2.5 px-3.5"
+                aria-label="GitHub Profile"
+              >
+                <GithubIcon className="social-icon w-3.5 h-3.5 text-[var(--color-navy)]" />
+                <span className="font-medium">GitHub</span>
+                <ArrowUpRightIcon className="social-arrow w-3 h-3 opacity-50" />
+              </a>
+
+              <a
+                id="hero-linkedin"
+                href={SOCIAL_LINKS.LINKEDIN}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-pill text-xs py-2.5 px-3.5"
+                aria-label="LinkedIn Profile"
+              >
+                <LinkedinIcon className="social-icon w-3.5 h-3.5 text-[#0A66C2]" />
+                <span className="font-medium">LinkedIn</span>
+                <ArrowUpRightIcon className="social-arrow w-3 h-3 opacity-50" />
+              </a>
+            </div>
+
           </motion.div>
         </motion.div>
       </div>
+
 
       {/* ── Scroll indicator ─────────────────────────────────── */}
       <motion.div
